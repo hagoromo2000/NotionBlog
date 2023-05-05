@@ -5,7 +5,7 @@ const notion = new Client({
 });
 
 export const getAllPosts = async () => {
-  // NOTION_DATABASE_IDがからであればエラーを返すことで、
+  // NOTION_DATABASE_IDが空であればエラーを返すことで、
   // database_id: process.env.NOTION_DATABASE_IDの型エラーを防ぐ
   if (!process.env.NOTION_DATABASE_ID) {
     throw new Error(
@@ -19,5 +19,18 @@ export const getAllPosts = async () => {
 
   const allPosts = posts.results;
 
-  return allPosts;
+  return allPosts.map((post) => {
+    return getPageMetaData(post);
+  });
+};
+
+// メタデータ取得用の関数;
+const getPageMetaData = (post: any) => {
+  return {
+    id: post.id,
+    title: post.properties.Name.title[0].plain_text,
+    description: post.properties.Description.rich_text[0].plain_text,
+    date: post.properties.Date.date.start,
+    slug: post.properties.Slug.rich_text[0].plain_text,
+  };
 };
