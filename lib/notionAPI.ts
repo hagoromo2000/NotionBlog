@@ -72,6 +72,6 @@ export const getSinglePost = async (slug: string) => {
   console.log(metadata);
 
   return {
-    page,
+    metadata,
   };
 };
