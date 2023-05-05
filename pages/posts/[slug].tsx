@@ -1,4 +1,17 @@
+import { getSinglePost } from "@/lib/notionAPI";
 import React from "react";
+
+// URLからslugを取得して、getStaticPropsに渡す
+export const getStaticProps = async ({ params }: { params: any }) => {
+  const post = await getSinglePost(params.slug);
+  return {
+    props: {
+      post,
+    },
+    // ISR (Incremental Static Regeneration) 一日ごとに内容を更新する
+    revalidate: 60 * 60 * 24,
+  };
+};
 
 const Post = () => {
   return (

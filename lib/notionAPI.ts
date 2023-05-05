@@ -44,3 +44,33 @@ const getPageMetaData = (post: any) => {
     tags: getTags(post.properties.Tags.multi_select),
   };
 };
+
+// 動的ルーティングのための関数
+export const getSinglePost = async (slug: string) => {
+  // NOTION_DATABASE_IDが空であればエラーを返すことで、
+  // database_id: process.env.NOTION_DATABASE_IDの型エラーを防ぐ
+  if (!process.env.NOTION_DATABASE_ID) {
+    throw new Error(
+      "NOTION_DATABASE_ID is not set in the environment variables"
+    );
+  }
+
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_DATABASE_ID,
+    filter: {
+      property: "Slug",
+      formula: {
+        string: {
+          equals: slug,
+        },
+      },
+    },
+  });
+
+  const page = response.results[0];
+  console.log(page);
+
+  return {
+    page,
+  };
+};
