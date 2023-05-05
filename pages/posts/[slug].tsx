@@ -1,6 +1,17 @@
 import { getSinglePost } from "@/lib/notionAPI";
 import React from "react";
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { slug: "first-post" } },
+      { params: { slug: "second-post" } },
+      { params: { slug: "third-post" } },
+    ],
+    fallback: "blocking", // 404ページを表示するまで待つ
+  };
+};
+
 // URLからslugを取得して、getStaticPropsに渡す
 export const getStaticProps = async ({ params }: { params: any }) => {
   const post = await getSinglePost(params.slug);
