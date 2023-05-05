@@ -1,6 +1,9 @@
 import { getAllPosts, getSinglePost } from "@/lib/notionAPI";
+import Link from "next/link";
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import vscDarkPlus from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export const getStaticPaths = async () => {
   const allPosts = await getAllPosts();
@@ -35,15 +38,43 @@ const Post = ({ post }: { post: any }) => {
       <span className="text-gray-500">Posted date at {post.metadata.date}</span>
       <br />
       {post.metadata.tags.map((tag: string) => (
-        <p
+        <div
           key={tag}
           className="text-white bg-sky-900 rounded-xl font-medium mt-2 px-2 inline-block mr-1"
         >
           {tag}
-        </p>
+        </div>
       ))}
       <div className="mt-10 font-medium">
-        <ReactMarkdown>{post.markdown}</ReactMarkdown>
+        <ReactMarkdown
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  {...props}
+                  style={vscDarkPlus}
+                  language={match[1]}
+                  PreTag="div"
+                >
+                  {String(children).replace(/\n$/, "")}/{" "}
+                </SyntaxHighlighter>
+              ) : (
+                <code {...props} className={className}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
+          {post.markdown}
+        </ReactMarkdown>
+
+        <Link href="/">
+          <span className="mb-20 block mt-5 text-sky-500 font-bold hover:text-sky-700">
+            ホームに戻る
+          </span>
+        </Link>
       </div>
     </section>
   );
