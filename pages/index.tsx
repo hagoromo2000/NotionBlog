@@ -1,21 +1,22 @@
 import SinglePost from "@/components/SinglePost";
-import { getAllPosts } from "@/lib/notionAPI";
+import { getAllPosts, getPostsForTopPage } from "@/lib/notionAPI";
+import { GetStaticProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
-export const getStaticProps = async () => {
-  const allPosts = await getAllPosts();
+export const getStaticProps: GetStaticProps = async () => {
+  const fourPosts = await getPostsForTopPage();
 
   return {
-    // allPosts: allPostsと同じ意味
     props: {
-      allPosts,
+      fourPosts,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
   };
 };
 
-export default function Home({ allPosts }: { allPosts: any }) {
+export default function Home({ fourPosts }: { fourPosts: any }) {
   return (
     <div className="container h-full w-full mx-auto">
       <Head>
@@ -26,7 +27,7 @@ export default function Home({ allPosts }: { allPosts: any }) {
 
       <main className="container w-full mt-16">
         <h1 className="text-5xl font-medium text-center mb-16">Notion Blog</h1>
-        {allPosts.map((post: any) => (
+        {fourPosts.map((post: any) => (
           <div key={post.id} className="mx-4">
             <SinglePost
               title={post.title}
@@ -34,9 +35,16 @@ export default function Home({ allPosts }: { allPosts: any }) {
               date={post.date}
               tags={post.tags}
               slug={post.slug}
+              isPaginationPage={false}
             />
           </div>
         ))}
+        <Link
+          href="/posts/page/1"
+          className="mb-6 lg:w-1/2 mx-auto px-5 block text-right font-sans color-sky-500 hover:text-sky-700"
+        >
+          ...もっと見る
+        </Link>
       </main>
     </div>
   );

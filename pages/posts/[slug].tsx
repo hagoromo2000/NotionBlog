@@ -71,7 +71,7 @@ const Post = ({ post }: { post: any }) => {
         </ReactMarkdown>
 
         <Link href="/">
-          <span className="mb-20 block mt-5 text-sky-500 font-bold hover:text-sky-700">
+          <span className="block pb-16 mt-5 text-sky-500 font-bold hover:text-sky-700">
             ホームに戻る
           </span>
         </Link>
