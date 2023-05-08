@@ -101,3 +101,11 @@ export const getPostsByPage = async (page: number) => {
 
   return allPosts.slice(startIndex, endIndex);
 };
+
+// ぺージ数の取得
+export const getNumberOfPages = async () => {
+  const allPosts = await getAllPosts();
+  const numberOfPages = Math.ceil(allPosts.length / NUMBER_OF_POSTS_PER_PAGE);
+
+  return numberOfPages;
+};
