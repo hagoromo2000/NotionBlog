@@ -1,5 +1,9 @@
 import SinglePost from "@/components/SinglePost";
-import { getAllPosts, getPostsForTopPage } from "@/lib/notionAPI";
+import {
+  getAllPosts,
+  getPostsByPage,
+  getPostsForTopPage,
+} from "@/lib/notionAPI";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 
@@ -16,19 +20,29 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const fourPosts = await getPostsForTopPage();
+export const getStaticProps: GetStaticProps = async (context) => {
+  let currentPage = context.params?.page;
+
+  // currentPageがundefinedの場合は、1ページ目を表示する
+  if (!currentPage) {
+    currentPage = "1";
+  }
+
+  // 1ページ目の場合は、getPostsForTopPageを使う
+  const postsByPage = await getPostsByPage(
+    parseInt(currentPage.toString(), 10)
+  );
 
   return {
     props: {
-      fourPosts,
+      postsByPage,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
   };
 };
 
-const BlogPageList = ({ fourPosts }: { fourPosts: any }) => {
+const BlogPageList = ({ postsByPage }: { postsByPage: any }) => {
   return (
     <div className="container h-full w-full mx-auto">
       <Head>
@@ -40,7 +54,7 @@ const BlogPageList = ({ fourPosts }: { fourPosts: any }) => {
       <main className="container w-full mt-16">
         <h1 className="text-5xl font-medium text-center mb-16">Notion Blog</h1>
         <section className="sm:grid grid-cols-2 w-5/6 gap-3 mx-auto">
-          {fourPosts.map((post: any) => (
+          {postsByPage.map((post: any) => (
             <div key={post.id}>
               <SinglePost
                 title={post.title}
