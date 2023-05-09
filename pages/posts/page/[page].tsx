@@ -1,6 +1,8 @@
+import Pagination from "@/components/Pagination/Pagination";
 import SinglePost from "@/components/SinglePost";
 import {
   getAllPosts,
+  getNumberOfPages,
   getPostsByPage,
   getPostsForTopPage,
 } from "@/lib/notionAPI";
@@ -8,20 +10,23 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const numberOfPage = await getNumberOfPages();
+
+  // pageの数だけparamsを作成する
+  let params = [];
+  for (let i = 1; i <= numberOfPage; i++) {
+    params.push({ params: { page: i.toString() } });
+  }
+
   return {
-    // paths: pathsと同じ意味
-    paths: [
-      { params: { page: "1" } },
-      { params: { page: "2" } },
-      { params: { page: "3" } },
-      { params: { page: "4" } },
-    ],
+    paths: params,
     fallback: "blocking", // 404ページを表示するまで待つ
   };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let currentPage = context.params?.page;
+  const numberOfPage = await getNumberOfPages();
 
   // currentPageがundefinedの場合は、1ページ目を表示する
   if (!currentPage) {
@@ -36,13 +41,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       postsByPage,
+      numberOfPage,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
   };
 };
 
-const BlogPageList = ({ postsByPage }: { postsByPage: any }) => {
+const BlogPageList = ({
+  postsByPage,
+  numberOfPage,
+}: {
+  postsByPage: any;
+  numberOfPage: number;
+}) => {
   return (
     <div className="container h-full w-full mx-auto">
       <Head>
@@ -67,6 +79,7 @@ const BlogPageList = ({ postsByPage }: { postsByPage: any }) => {
             </div>
           ))}
         </section>
+        <Pagination numberOfPage={numberOfPage} />
       </main>
     </div>
   );
