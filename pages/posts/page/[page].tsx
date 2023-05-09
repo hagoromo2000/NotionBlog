@@ -1,6 +1,7 @@
 import SinglePost from "@/components/SinglePost";
 import {
   getAllPosts,
+  getNumberOfPages,
   getPostsByPage,
   getPostsForTopPage,
 } from "@/lib/notionAPI";
@@ -8,14 +9,16 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const numberOfPage = await getNumberOfPages();
+
+  // pageの数だけparamsを作成する
+  let params = [];
+  for (let i = 1; i <= numberOfPage; i++) {
+    params.push({ params: { page: i.toString() } });
+  }
+
   return {
-    // paths: pathsと同じ意味
-    paths: [
-      { params: { page: "1" } },
-      { params: { page: "2" } },
-      { params: { page: "3" } },
-      { params: { page: "4" } },
-    ],
+    paths: params,
     fallback: "blocking", // 404ページを表示するまで待つ
   };
 };
