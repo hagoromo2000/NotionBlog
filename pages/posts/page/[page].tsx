@@ -1,11 +1,6 @@
 import Pagination from "@/components/Pagination/Pagination";
 import SinglePost from "@/components/SinglePost";
-import {
-  getAllPosts,
-  getNumberOfPages,
-  getPostsByPage,
-  getPostsForTopPage,
-} from "@/lib/notionAPI";
+import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 
@@ -79,7 +74,7 @@ const BlogPageList = ({
             </div>
           ))}
         </section>
-        <Pagination numberOfPage={numberOfPage} />
+        <Pagination numberOfPage={numberOfPage} tag={""} />
       </main>
     </div>
   );
