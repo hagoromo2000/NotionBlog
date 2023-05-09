@@ -1,3 +1,4 @@
+import Pagination from "@/components/Pagination/Pagination";
 import SinglePost from "@/components/SinglePost";
 import {
   getAllPosts,
@@ -25,6 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let currentPage = context.params?.page;
+  const numberOfPage = await getNumberOfPages();
 
   // currentPageがundefinedの場合は、1ページ目を表示する
   if (!currentPage) {
@@ -39,13 +41,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       postsByPage,
+      numberOfPage,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
   };
 };
 
-const BlogPageList = ({ postsByPage }: { postsByPage: any }) => {
+const BlogPageList = ({
+  postsByPage,
+  numberOfPage,
+}: {
+  postsByPage: any;
+  numberOfPage: number;
+}) => {
   return (
     <div className="container h-full w-full mx-auto">
       <Head>
@@ -70,6 +79,7 @@ const BlogPageList = ({ postsByPage }: { postsByPage: any }) => {
             </div>
           ))}
         </section>
+        <Pagination numberOfPage={numberOfPage} />
       </main>
     </div>
   );
