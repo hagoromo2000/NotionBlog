@@ -61,6 +61,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   currentPage = currentPage.toString();
 
   currentTag = currentTag.toString();
+
   // currentTagの先頭を大文字にする
   const upperCaseCurrentTag =
     currentTag.charAt(0).toUpperCase() + currentTag.slice(1);

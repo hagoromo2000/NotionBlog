@@ -23,7 +23,7 @@ const SinglePost = (props: Props) => {
             <div className="text-gray-100">{date}</div>
             {tags.map((tag) => (
               <Link href={`/posts/tag/${tag}/page/1`} key={tag}>
-                <span className="text-white bg-gray-500 rounded-xl px-2 pb-1 font-medium mrー2 hover:bg-gray-300">
+                <span className="text-white bg-gray-500 rounded-xl px-2 pb-1 font-medium mr-2 hover:bg-gray-300">
                   {tag}
                 </span>
               </Link>
