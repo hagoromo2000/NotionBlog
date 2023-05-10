@@ -20,6 +20,13 @@ export const getAllPosts = async () => {
   const posts = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID,
     page_size: 100,
+    // 公開済みの記事のみ取得
+    filter: {
+      property: "Published",
+      checkbox: {
+        equals: true,
+      },
+    },
     // 最新投稿順に並び替え
     sorts: [
       {
