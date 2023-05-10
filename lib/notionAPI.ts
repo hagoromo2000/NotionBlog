@@ -20,6 +20,13 @@ export const getAllPosts = async () => {
   const posts = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID,
     page_size: 100,
+    // 最新投稿順に並び替え
+    sorts: [
+      {
+        property: "Date",
+        direction: "descending",
+      },
+    ],
   });
 
   const allPosts = posts.results;
@@ -131,8 +138,6 @@ export const getNumberOfPagesByTag = async (tagName: string) => {
   });
 
   const numberOfPages = Math.ceil(posts.length / NUMBER_OF_POSTS_PER_PAGE);
-  // console.log(tagName);
-  // console.log(numberOfPages);
   return numberOfPages;
 };
 
