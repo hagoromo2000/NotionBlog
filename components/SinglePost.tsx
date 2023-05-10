@@ -14,7 +14,7 @@ const SinglePost = (props: Props) => {
   const { title, description, date, tags, slug, isPaginationPage } = props;
 
   return (
-    <Link href={`/posts/${slug}`}>
+    <Link href={`/posts/${slug}`} legacyBehavior>
       {isPaginationPage ? (
         <section className=" bg-sky-900 mb-8 mx-auto rounded-md p-5 shadow-2xl hover:shadow-none hover:translate-y-1 transition-all duration-300">
           <div className="lg:flex items-center gap-3">
