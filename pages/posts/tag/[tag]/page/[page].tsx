@@ -83,8 +83,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       currentTag,
       allTags,
     },
-    // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
-    revalidate: 60 * 60,
+    // ISR (Incremental Static Regeneration) 1分ごとに内容を更新する
+    revalidate: 60,
   };
 };
 

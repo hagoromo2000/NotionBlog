@@ -25,8 +25,8 @@ export const getStaticProps = async ({ params }: { params: any }) => {
     props: {
       post,
     },
-    // ISR (Incremental Static Regeneration) 一日ごとに内容を更新する
-    revalidate: 60 * 60 * 24,
+    // ISR (Incremental Static Regeneration) 一分ごとに内容を更新する
+    revalidate: 60,
   };
 };
 
