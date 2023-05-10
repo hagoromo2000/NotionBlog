@@ -1,23 +1,30 @@
 import SinglePost from "@/components/SinglePost";
 import Tag from "@/components/Tag/Tag";
-import { getAllPosts, getPostsForTopPage } from "@/lib/notionAPI";
+import { getAllTags, getPostsForTopPage } from "@/lib/notionAPI";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
 export const getStaticProps: GetStaticProps = async () => {
   const fourPosts = await getPostsForTopPage();
-
+  const allTags = await getAllTags();
   return {
     props: {
       fourPosts,
+      allTags,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
   };
 };
 
-export default function Home({ fourPosts }: { fourPosts: any }) {
+export default function Home({
+  fourPosts,
+  allTags,
+}: {
+  fourPosts: any;
+  allTags: string[];
+}) {
   return (
     <div className="container h-full w-full mx-auto">
       <Head>
@@ -46,7 +53,7 @@ export default function Home({ fourPosts }: { fourPosts: any }) {
         >
           ...もっと見る
         </Link>
-        <Tag />
+        <Tag tags={allTags} />
       </main>
     </div>
   );

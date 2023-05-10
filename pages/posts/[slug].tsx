@@ -38,12 +38,11 @@ const Post = ({ post }: { post: any }) => {
       <span className="text-gray-500">Posted date at {post.metadata.date}</span>
       <br />
       {post.metadata.tags.map((tag: string) => (
-        <div
-          key={tag}
-          className="text-white bg-sky-900 rounded-xl font-medium mt-2 px-2 inline-block mr-1"
-        >
-          {tag}
-        </div>
+        <Link href={`/posts/tag/${tag}/page/1`} key={tag}>
+          <div className="text-white bg-sky-900 rounded-xl font-medium mt-2 px-2 inline-block mr-1 hover:bg-sky-400">
+            {tag}
+          </div>
+        </Link>
       ))}
       <div className="mt-10 font-medium">
         <ReactMarkdown
