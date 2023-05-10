@@ -1,4 +1,5 @@
 import SinglePost from "@/components/SinglePost";
+import Tag from "@/components/Tag/Tag";
 import { getAllPosts, getPostsForTopPage } from "@/lib/notionAPI";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -45,6 +46,7 @@ export default function Home({ fourPosts }: { fourPosts: any }) {
         >
           ...もっと見る
         </Link>
+        <Tag />
       </main>
     </div>
   );
