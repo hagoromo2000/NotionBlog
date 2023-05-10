@@ -10,12 +10,12 @@ const Tag = (props: Props) => {
 
   return (
     <div className="mx-4">
-      <section className="lg:w-1/2 mb-8 mx-auto bg-sky-200 rounded-md p-5 shadow-2xl hover:shadow-none hover:translate-y-1 duration-300 transition-all">
+      <section className="lg:w-1/2 mb-8 mx-auto bg-sky-200 rounded-md p-5 shadow-2xl ">
         <div className="font-bold mb-4">タグ検索</div>
         <div className="flex flex-wrap gap-5">
           {tags.map((tag: string) => (
             <Link href={`/posts/tag/${tag}/page/1`} key={tag}>
-              <span className="cursor-pointer px-2 font-medium pb-1 rounded-xl bg-gray-400 inline-block">
+              <span className="cursor-pointer px-2 font-medium pb-1 rounded-xl bg-gray-400 inline-block hover:bg-gray-100">
                 {tag}
               </span>
             </Link>

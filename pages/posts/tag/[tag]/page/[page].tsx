@@ -1,5 +1,6 @@
 import Pagination from "@/components/Pagination/Pagination";
 import SinglePost from "@/components/SinglePost";
+import Tag from "@/components/Tag/Tag";
 import {
   getAllTags,
   getNumberOfPagesByTag,
@@ -73,11 +74,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     upperCaseCurrentTag
   );
 
+  const allTags = await getAllTags();
+
   return {
     props: {
       posts,
       numberOfPagesByTag,
       currentTag,
+      allTags,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
@@ -88,10 +92,12 @@ const BlogTagPageList = ({
   posts,
   numberOfPagesByTag,
   currentTag,
+  allTags,
 }: {
   posts: any;
   numberOfPagesByTag: number;
   currentTag: string;
+  allTags: string[];
 }) => {
   return (
     <div className="container h-full w-full mx-auto">
@@ -118,6 +124,7 @@ const BlogTagPageList = ({
           ))}
         </section>
         <Pagination numberOfPage={numberOfPagesByTag} tag={currentTag} />
+        <Tag tags={allTags} />
       </main>
     </div>
   );

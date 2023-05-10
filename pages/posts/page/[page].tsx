@@ -1,6 +1,7 @@
 import Pagination from "@/components/Pagination/Pagination";
 import SinglePost from "@/components/SinglePost";
-import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
+import Tag from "@/components/Tag/Tag";
+import { getAllTags, getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 
@@ -33,10 +34,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
     parseInt(currentPage.toString(), 10)
   );
 
+  const allTags = await getAllTags();
+
   return {
     props: {
       postsByPage,
       numberOfPage,
+      allTags,
     },
     // ISR (Incremental Static Regeneration) 1時間ごとに内容を更新する
     revalidate: 60 * 60,
@@ -46,9 +50,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const BlogPageList = ({
   postsByPage,
   numberOfPage,
+  allTags,
 }: {
   postsByPage: any;
   numberOfPage: number;
+  allTags: string[];
 }) => {
   return (
     <div className="container h-full w-full mx-auto">
@@ -75,6 +81,7 @@ const BlogPageList = ({
           ))}
         </section>
         <Pagination numberOfPage={numberOfPage} tag={""} />
+        <Tag tags={allTags} />
       </main>
     </div>
   );
