@@ -41,6 +41,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       postsByPage,
       numberOfPage,
       allTags,
+      currentPage,
     },
     // ISR (Incremental Static Regeneration) 1分ごとに内容を更新する
     revalidate: 60,
@@ -51,10 +52,12 @@ const BlogPageList = ({
   postsByPage,
   numberOfPage,
   allTags,
+  currentPage,
 }: {
   postsByPage: any;
   numberOfPage: number;
   allTags: string[];
+  currentPage: string;
 }) => {
   return (
     <div className="container h-full w-full mx-auto">
@@ -80,7 +83,11 @@ const BlogPageList = ({
             </div>
           ))}
         </section>
-        <Pagination numberOfPage={numberOfPage} tag={""} />
+        <Pagination
+          numberOfPage={numberOfPage}
+          tag={""}
+          currentPage={currentPage}
+        />
         <Tag tags={allTags} />
       </main>
     </div>
